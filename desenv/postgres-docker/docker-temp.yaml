@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+  local-postgres-compose:
+    image: postgres
+    container_name: db-server1
+    environment:
+      POSTGRES_PASSWORD: "123"
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./postgres-data:/var/lib/postgresql/data
+    networks:
+      - postgres-compose-network
+
+  founding-plataforma-main-service-compose:
+    image: founding/plataforma-main-service
+    container_name: plataforma-main-service1
+    depends_on:
+      - "local-postgres-compose"
+    ports:
+      - "7070:70"
+    networks:
+      - postgres-compose-network
+
+  founding-plataforma-front-compose:
+    image: founding/plataforma-front
+    container_name: plataforma-front1
+    environment:
+      - PLATAFORMA_URL=http://plataforma-main-service1
+    ports:
+      - "80:4000"
+    networks:
+      - postgres-compose-network
+
+networks:
+  postgres-compose-network:
+    driver: bridge

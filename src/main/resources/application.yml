@@ -1,0 +1,20 @@
+spring:
+  batch:
+    job:
+      enabled: false
+  datasource:
+    hikari:
+      connection-test-query: SELECT 1
+      minimum-idle: 1
+      maximum-pool-size: 10
+      pool-name: plataforma-database-pool
+      auto-commit: false
+      connection-timeout: 30000
+    url: "jdbc:postgresql://localhost:15432/tutorial_spring_batch"
+    username: postgres
+    password: 123
+    type: com.zaxxer.hikari.HikariDataSource
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: none
